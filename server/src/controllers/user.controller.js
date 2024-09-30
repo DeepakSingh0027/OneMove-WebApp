@@ -14,7 +14,7 @@ const generateAccessAndRefreshToken = async(userID)=>{
 
         user.refreshToken = refreshToken
         await user.save({validateBeforeSave: false})
-
+        console.log(accessToken)
         return {accessToken, refreshToken}
 
     }catch(er)
@@ -110,7 +110,7 @@ const loginUser = asyncHandler(async(req,res)=>{
     }
 
     return res.status(200)
-    .cookie("accessToken", accessToken. options)
+    .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
     .json(new ApiResponse(
         200,
@@ -176,8 +176,8 @@ const refreshAccessToken = asyncHandler(async(req,res)=>{
         const {accessToken,newrefreshToken} = await generateAccessAndRefreshToken(user._id)
     
         return res.status(200)
-        .cookie("accessToken", accessToken)
-        .cookie("refreshToken", newrefreshToken)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", newrefreshToken, options)
         .json(
             new ApiResponse(
                 200,
