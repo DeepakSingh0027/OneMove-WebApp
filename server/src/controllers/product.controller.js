@@ -78,15 +78,6 @@ const getUserProducts = asyncHandler(async(req,res)=>{
 
 })
 
-const getProductSold = asyncHandler(async(req,res)=>{
-    const user = req.user;
-
-    const soldItems = await ProductSold.find({ owner: user._id });
-
-    return res.status(200)
-    .json(new ApiResponse(200,soldItems,"ProductSold Fetched"))
-})
-
 const getAllProducts = asyncHandler(async(req,res)=>{
     
     const products = await Product.find()
@@ -167,7 +158,6 @@ const getProductAccToCategory = asyncHandler(async(req,res)=>{
 
 export {
     getUserProducts,
-    getProductSold,
     listProduct,
     getAllProducts,
     getProductAccToCategory

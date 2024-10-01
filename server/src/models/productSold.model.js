@@ -11,10 +11,6 @@ const productSoldSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     },
-    owner:{
-        type: Schema.Types.ObjectId,
-        ref: "User"
-    },
     quantity: {
         type: Number,
         default: 1,

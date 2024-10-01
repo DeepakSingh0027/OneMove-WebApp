@@ -4,7 +4,6 @@ import { verifyJWT } from "../middlewares/auth.middleware.js"
 
 import { getAllProducts, 
     getProductAccToCategory, 
-    getProductSold, 
     getUserProducts, 
     listProduct } from "../controllers/product.controller.js"
 
@@ -24,11 +23,6 @@ router.route("/list-product").post(
 router.route("/get-user-products").get(
     verifyJWT,
     getUserProducts
-)
-
-router.route("/get-sold-products").get(
-    verifyJWT,
-    getProductSold
 )
 
 router.route("/get-all-products").get(
