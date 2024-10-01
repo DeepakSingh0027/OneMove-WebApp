@@ -12,11 +12,6 @@ const cartSchema = new Schema({
         ref: "User",
         required: true // The buyer (user) who added the product to the cart
     },
-    owner: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true // The owner (seller) of the product
-    },
     quantity: {
         type: Number,
         default: 1,
