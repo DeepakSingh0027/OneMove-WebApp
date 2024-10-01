@@ -14,7 +14,7 @@ const generateAccessAndRefreshToken = async(userID)=>{
 
         user.refreshToken = refreshToken
         await user.save({validateBeforeSave: false})
-        console.log(accessToken)
+        //console.log(accessToken)
         return {accessToken, refreshToken}
 
     }catch(er)

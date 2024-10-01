@@ -2,7 +2,9 @@ import {Router} from "express"
 import { upload } from "../middlewares/multer.middleware.js"
 import { verifyJWT } from "../middlewares/auth.middleware.js"
 
-import { getProductSold, 
+import { getAllProducts, 
+    getProductAccToCategory, 
+    getProductSold, 
     getUserProducts, 
     listProduct } from "../controllers/product.controller.js"
 
@@ -19,12 +21,22 @@ router.route("/list-product").post(
     listProduct
 )
 
-router.route("/get-user-product").get(
+router.route("/get-user-products").get(
+    verifyJWT,
     getUserProducts
 )
 
-router.route("/get-sold-product").get(
+router.route("/get-sold-products").get(
+    verifyJWT,
     getProductSold
+)
+
+router.route("/get-all-products").get(
+    getAllProducts
+)
+
+router.route("/get-category-products").post(
+    getProductAccToCategory
 )
 
 export default router
