@@ -1,5 +1,7 @@
 import {Router} from "express"
 import { upload } from "../middlewares/multer.middleware.js"
+import { verifyJWT } from "../middlewares/auth.middleware.js"
+
 import { getProductSold, 
     getUserProducts, 
     listProduct } from "../controllers/product.controller.js"
@@ -7,6 +9,7 @@ import { getProductSold,
 const router = Router()
 
 router.route("/list-product").post(
+    verifyJWT,
     upload.fields([
         {
             name: "image",

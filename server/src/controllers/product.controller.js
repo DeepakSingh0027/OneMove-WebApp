@@ -9,10 +9,10 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 
 
 const listProduct = asyncHandler(async(req,res)=>{
-    const { title, description, specifications, quantity, categoryName, categoryDescription, categoryParent } = req.body;
+    const { title, description, specifications, quantity, price, categoryName, categoryDescription, categoryParent } = req.body;
     const sellerId = req.user._id;
-
-    if(!title || !description || !specifications || !quantity || !categoryName || !categoryDescription){
+    console.log(categoryName)
+    if(!title || !description || !specifications || !quantity || !price || !categoryName || !categoryDescription){
         throw new ApiError(400, "Details are Missing")
     }
 
@@ -29,15 +29,21 @@ const listProduct = asyncHandler(async(req,res)=>{
         category = await newCategory.save();
     }
 
-    const file = req.files.image
+    const file = req.files?.image ? req.files.image[0] : null;
 
     if(!file)
     {
         throw new ApiError(400,"Image Missing")
     }
+    
+    const localPath = file?.path
 
-    const imageUrl = await uploadOnCloudinary(file.path)
+    const imageUrl = await uploadOnCloudinary(localPath)
 
+    if (!imageUrl || !imageUrl.url) {
+        throw new ApiError(500, "Failed to upload image to Cloudinary");
+    }
+    
     const newProduct = await Product.create({
         title,
         description,
@@ -45,6 +51,7 @@ const listProduct = asyncHandler(async(req,res)=>{
         quantity,
         owner: sellerId, // The seller who uploaded the product
         category,
+        price,
         image: imageUrl.url // Set image URL from Cloudinary
     });
 
