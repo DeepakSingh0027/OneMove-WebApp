@@ -19,6 +19,10 @@ const productSoldSchema = new Schema({
         type: Number,
         default: 1,
         min: [1, 'Quantity cannot be less than 1']
+    },
+    address:{
+        type: String,
+        required: true,
     }
 },{
     timestamps: true
