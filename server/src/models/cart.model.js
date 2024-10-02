@@ -7,7 +7,7 @@ const cartSchema = new Schema({
         ref: "Product",
         required: true // Ensures that each cart item is tied to a product
     },
-    buyer: {
+    owner: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true // The buyer (user) who added the product to the cart
