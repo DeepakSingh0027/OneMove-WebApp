@@ -10,7 +10,9 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 
 const listProduct = asyncHandler(async(req,res)=>{
     const { title, description, specifications, quantity, price, categoryName, categoryDescription, categoryParentName } = req.body;
+    
     const sellerId = req.user._id;
+
     //console.log(categoryName)
     if(!title || !description || !specifications || !quantity || !price || !categoryName || !categoryDescription){
         throw new ApiError(400, "Details are Missing")
