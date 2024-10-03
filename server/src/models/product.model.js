@@ -27,7 +27,11 @@ const productSchema = new Schema({
         type: Number,
         required: true,
         min: [0, "Quantity cannot be negative"]
-    },      
+    },
+    likes:{
+        type: Number,
+        default: 0
+    },  
     owner:{
         type: Schema.Types.ObjectId,
         ref: "User"

@@ -156,9 +156,63 @@ const getProductAccToCategory = asyncHandler(async(req,res)=>{
 
 })
 
+const updateLike = asyncHandler(async(req, res) => {
+    const { productID } = req.body;
+
+    if (!productID) {
+        throw new ApiError(400, "Product ID is missing");
+    }
+
+    // Increment the 'like' field by 1
+    const product = await Product.findByIdAndUpdate(
+        productID, // Find the product by ID
+        { $inc: { like: 1 } }, // Increment the 'like' field by 1
+        { new: true } // Return the updated document
+    );
+
+    if (!product) {
+        throw new ApiError(404, "Product not found");
+    }
+
+    // Return the updated product as response
+    return res.status(200).json(new ApiResponse(
+        200,
+        product,
+        "Product like updated successfully"
+    ));
+});
+
+const deleteLike = asyncHandler(async(req,res)=>{
+    const { productID } = req.body;
+
+    if (!productID) {
+        throw new ApiError(400, "Product ID is missing");
+    }
+
+    // Increment the 'like' field by 1
+    const product = await Product.findByIdAndUpdate(
+        productID, // Find the product by ID
+        { $inc: { like: -1 } }, // Increment the 'like' field by 1
+        { new: true } // Return the updated document
+    );
+
+    if (!product) {
+        throw new ApiError(404, "Product not found");
+    }
+
+    // Return the updated product as response
+    return res.status(200).json(new ApiResponse(
+        200,
+        product,
+        "Product like updated successfully"
+    ));
+})
+
 export {
     getUserProducts,
     listProduct,
     getAllProducts,
-    getProductAccToCategory
+    getProductAccToCategory,
+    updateLike,
+    deleteLike
 }

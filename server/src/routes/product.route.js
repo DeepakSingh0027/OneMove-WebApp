@@ -2,10 +2,11 @@ import {Router} from "express"
 import { upload } from "../middlewares/multer.middleware.js"
 import { verifyJWT } from "../middlewares/auth.middleware.js"
 
-import { getAllProducts, 
+import { deleteLike, getAllProducts, 
     getProductAccToCategory, 
     getUserProducts, 
-    listProduct } from "../controllers/product.controller.js"
+    listProduct, 
+    updateLike} from "../controllers/product.controller.js"
 
 const router = Router()
 
@@ -31,6 +32,14 @@ router.route("/get-all-products").get(
 
 router.route("/get-category-products").post(
     getProductAccToCategory
+)
+
+router.route("/add-like").post(
+    updateLike
+)
+
+router.route("del-like").post(
+    deleteLike
 )
 
 export default router
