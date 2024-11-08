@@ -2,7 +2,7 @@ import mongoose,{Schema} from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2"
 
 
-const productSoldSchema = new Schema({
+const orderSchema = new Schema({
     product: {
         type: Schema.Types.ObjectId,
         ref: "Product"
@@ -24,7 +24,7 @@ const productSoldSchema = new Schema({
     timestamps: true
 })
 
-productSoldSchema.plugin(mongooseAggregatePaginate)
+orderSchema.plugin(mongooseAggregatePaginate)
 
 
-export const ProductSold = mongoose.model("ProductSold", productSoldSchema)
+export const Order = mongoose.model("Order", orderSchema)

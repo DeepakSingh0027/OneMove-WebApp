@@ -2,13 +2,14 @@ import { asyncHandler } from "../utils/AsyncHandler.js"
 import {ApiError} from "../utils/ApiError.js"
 import {User} from "../models/user.model.js"
 import { Category } from "../models/category.model.js"
-import {ProductSold} from "../models/productSold.model.js"
+import {Order} from "../models/order.model.js"
 import {Product} from "../models/product.model.js"
 import {uploadOnCloudinary} from "../utils/Cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
+import { Order } from "../models/order.model.js"
 
-
-const listProductSold = asyncHandler(async (req, res, next) => {
+//buyer
+const listOrder = asyncHandler(async (req, res, next) => {
     const { productID, quantity, address } = req.body;
 
     // Validate input
@@ -32,7 +33,7 @@ const listProductSold = asyncHandler(async (req, res, next) => {
     await currentProduct.save(); // Save the updated stock
 
     // Create the ProductSold entry
-    const listProduct = await ProductSold.create({
+    const listProduct = await Order.create({
         product: currentProduct._id,
         buyer: req.user._id,  // Assuming buyer is the logged-in user
         quantity,
@@ -52,11 +53,12 @@ const listProductSold = asyncHandler(async (req, res, next) => {
 });
 
 
-const getBuyProduct = asyncHandler(async(req,res)=>
+//both
+const getOrder = asyncHandler(async(req,res)=>
 {
     const user = req.user
 
-    const products = await ProductSold.find({buyer: user._id})
+    const products = await Order.find({buyer: user._id})
 
     return res.status(200)
     .json(new ApiResponse(200,
@@ -65,12 +67,12 @@ const getBuyProduct = asyncHandler(async(req,res)=>
     ))
 
 })
-
-const getProductSold = asyncHandler(async (req, res) => {
+//seller
+const getOrderSold = asyncHandler(async (req, res) => {
     const user = req.user;
 
     // Fetch sold items where the product's owner is the current user
-    const soldItems = await ProductSold.find()
+    const soldItems = await Order.find()
         .populate({
             path: 'product', // Populate the product field
             match: { owner: user._id } // Filter products by owner
@@ -84,7 +86,7 @@ const getProductSold = asyncHandler(async (req, res) => {
 });
 
 
-export {getProductSold,
-    getBuyProduct,
-    listProductSold
+export {listOrder,
+    getOrderSold,
+    getOrder
 }

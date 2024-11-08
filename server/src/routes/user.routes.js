@@ -8,6 +8,7 @@ import { changeCurrentPassword,
     updateAccountDetails,
     updateRole
     } from "../controllers/user.controller.js"
+import { getUserProducts } from "../controllers/product.controller.js"
 import { upload } from "../middlewares/multer.middleware.js"
 import { verifyJWT } from "../middlewares/auth.middleware.js"
 
@@ -16,8 +17,11 @@ const router = Router()
 router.route("/register").post(
     registerUser
 )
-
-// secure 
+ 
+router.route("/get-user-products").get(
+    verifyJWT,
+    getUserProducts
+)
 
 router.route("/login").post(
     loginUser

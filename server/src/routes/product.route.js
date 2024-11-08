@@ -4,12 +4,11 @@ import { verifyJWT } from "../middlewares/auth.middleware.js"
 
 import { deleteLike, getAllProducts, 
     getProductAccToCategory, 
-    getUserProducts, 
     listProduct, 
     updateLike} from "../controllers/product.controller.js"
 
 const router = Router()
-
+//seller
 router.route("/list-product").post(
     verifyJWT,
     upload.fields([
@@ -21,11 +20,14 @@ router.route("/list-product").post(
     listProduct
 )
 
-router.route("/get-user-products").get(
-    verifyJWT,
-    getUserProducts
+router.route("/add-like").post(
+    updateLike
 )
 
+router.route("del-like").post(
+    deleteLike
+)
+//buyer
 router.route("/get-all-products").get(
     getAllProducts
 )
@@ -34,12 +36,5 @@ router.route("/get-category-products").post(
     getProductAccToCategory
 )
 
-router.route("/add-like").post(
-    updateLike
-)
-
-router.route("del-like").post(
-    deleteLike
-)
 
 export default router

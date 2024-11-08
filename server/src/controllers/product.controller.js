@@ -5,6 +5,7 @@ import {Product} from "../models/product.model.js"
 import {uploadOnCloudinary} from "../utils/Cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 
+//seller
 
 const listProduct = asyncHandler(async(req,res)=>{
     const { title, description, specifications, quantity, price, categoryName, categoryDescription, categoryParentName } = req.body;
