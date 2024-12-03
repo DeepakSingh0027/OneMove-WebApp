@@ -187,7 +187,7 @@ export default function Login() {
                     <div
                       className={`py-2 px-4 rounded-full cursor-pointer ${
                         buyerSelected ? "bg-[#92552f]" : "bg-[#775021]"
-                      } text-[#f5cb90]`}
+                      } text-[#f5cb90] hover:bg-[#775021]`}
                       onClick={() => setBuyerSelected(!buyerSelected)}
                     >
                       Buyer
@@ -195,7 +195,7 @@ export default function Login() {
                     <div
                       className={`py-2 px-4 rounded-full cursor-pointer ${
                         sellerSelected ? "bg-[#92552f]" : "bg-[#775021]"
-                      } text-[#f5cb90]`}
+                      } text-[#f5cb90] hover:bg-[#775021]`}
                       onClick={() => setSellerSelected(!sellerSelected)}
                     >
                       Seller
