@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Alegreya+SC&family=Poppins&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body {
+  font-family: "Alegreya SC";
+  background: radial-gradient(circle, blanchedalmond, #d9b89e);
+}
+.offer {
+  background: radial-gradient(circle, blanchedalmond, #815826);
+  margin-top: 70px;
+  padding-top: 30px 0;
+  margin-bottom: 70px;
+}
