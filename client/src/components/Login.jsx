@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [buyerSelected, setBuyerSelected] = useState(false);
   const [sellerSelected, setSellerSelected] = useState(false);
+  const navigate = useNavigate();
+  const [message, setMessage] = useState("");
 
   const handleLogin = () => setIsLogin(true);
   const handleRegister = () => setIsLogin(false);
@@ -15,6 +19,89 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [usernameEmail, setUsernameEmail] = useState("");
+
+  //response
+  const [response, setResponse] = useState(null);
+
+  const loginFormSubmit = async () => {
+    if (!usernameEmail || !password) {
+      setMessage("Please fill in all fields.");
+      return;
+    }
+
+    const isEmail = usernameEmail.includes("@");
+    const data = {
+      [isEmail ? "email" : "username"]: usernameEmail,
+      password,
+    };
+
+    try {
+      const result = await axios.post(
+        `http://localhost:9000/api/v1/users/login`,
+        data,
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      const responseData = result.data;
+
+      if (responseData.success) {
+        setMessage(`Welcome ${responseData.data.user.fullname}`);
+        navigate("/"); // Redirect on success
+      } else {
+        setMessage("Login failed. Please check your credentials. ");
+      }
+    } catch (error) {
+      const backendError = error.response?.data;
+      const errorMessages = backendError?.errors?.length
+        ? backendError.errors.join(", ")
+        : backendError?.message ||
+          "Login failed! Please check your credentials or Register Again";
+      setMessage(errorMessages);
+      setIsLogin(false);
+    }
+  };
+
+  const registerFormSubmit = async () => {
+    if (!fullname || !email || !username || !password) {
+      setMessage("All fields are required for registration.");
+      return;
+    }
+
+    // Collect selected roles
+    const role = [];
+    if (buyerSelected) role.push("buyer");
+    if (sellerSelected) role.push("seller");
+
+    if (role.length === 0) {
+      setMessage("Please select at least one role (Buyer or Seller).");
+      return;
+    }
+
+    const data = { fullname, email, username, password, role };
+
+    try {
+      const result = await axios.post(
+        `http://localhost:9000/api/v1/users/register`,
+        data,
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      const responseData = result.data;
+
+      if (responseData.success) {
+        setMessage("Registration successful! Please log in.");
+        setIsLogin(true); // Switch to Login view
+      } else {
+        setMessage("Registration failed. Please try again.");
+      }
+    } catch (error) {
+      const backendError = error.response?.data;
+      const errorMessages = backendError?.errors?.length
+        ? backendError.errors.join(", ")
+        : backendError?.message || "Registration failed! Please try again.";
+      setMessage(errorMessages);
+    }
+  };
 
   return (
     <div className="font-['Alegreya_SC'] bg-gradient-radial from-blanchedalmond to-[#d9b89e] min-h-screen">
@@ -75,6 +162,12 @@ export default function Login() {
       </header>
 
       <main className="py-12">
+        <div
+          className="text-2xl font-['Alegreya_SC'] text-[#41290c] text-center"
+          id="displayM"
+        >
+          {message}
+        </div>
         <div className="max-w-[1300px] mx-auto px-[25px]">
           <div className="flex items-center justify-around">
             <div className="w-1/2">
@@ -118,7 +211,10 @@ export default function Login() {
                       ? "translateX(0px)"
                       : "translateX(-300px)",
                   }}
-                  onSubmit={(e) => e.preventDefault()}
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    loginFormSubmit();
+                  }}
                 >
                   <input
                     type="text"
@@ -153,7 +249,10 @@ export default function Login() {
                       ? "translateX(300px)"
                       : "translateX(0px)",
                   }}
-                  onSubmit={(e) => e.preventDefault()}
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    registerFormSubmit();
+                  }}
                 >
                   <input
                     type="text"

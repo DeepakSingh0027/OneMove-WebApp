@@ -1,6 +1,6 @@
 import React from "react";
 
-function Card({ index, name, category, price }) {
+function Card({ index, name, category, price, link }) {
   return (
     <div>
       <img
