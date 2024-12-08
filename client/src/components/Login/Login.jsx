@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../context/userContext";
+import Cookies from "js-cookie";
 
 export default function Login() {
+  const { updateFullname, updateEmail, updateRole } = useUser();
   const [isLogin, setIsLogin] = useState(true);
   const [buyerSelected, setBuyerSelected] = useState(false);
   const [sellerSelected, setSellerSelected] = useState(false);
@@ -19,9 +22,6 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [usernameEmail, setUsernameEmail] = useState("");
-
-  //response
-  const [response, setResponse] = useState(null);
 
   const loginFormSubmit = async () => {
     if (!usernameEmail || !password) {
@@ -39,14 +39,24 @@ export default function Login() {
       const result = await axios.post(
         `http://localhost:9000/api/v1/users/login`,
         data,
-        { headers: { "Content-Type": "application/json" } }
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
       );
+
+      console.log(result);
 
       const responseData = result.data;
 
       if (responseData.success) {
+        updateFullname(responseData.data.user.fullname);
+        updateRole(responseData.data.user.activeRole);
+        updateEmail(responseData.data.user.email);
         setMessage(`Welcome ${responseData.data.user.fullname}`);
-        navigate("/"); // Redirect on success
+        setTimeout(() => {
+          navigate("/products");
+        }, 100);
       } else {
         setMessage("Login failed. Please check your credentials. ");
       }
