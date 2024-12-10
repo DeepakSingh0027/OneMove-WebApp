@@ -1,16 +1,5 @@
-import { createContext, useContext } from "react";
+import React from "react";
 
-export const userContext = createContext({
-  fullname: "",
-  role: "buyer",
-  email: "",
-  updateFullname: (fullname) => {},
-  updateRole: (role) => {},
-  updateEmail: (email) => {},
-});
+const UserContext = React.createContext();
 
-export const useUser = () => {
-  return useContext(userContext);
-};
-
-export const UserProvider = userContext.Provider;
+export default UserContext;

@@ -1,69 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useState, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useUser } from "../../context/userContext";
+import UserContext from "../../context/userContext";
 import axios from "axios";
+import Card from "../Buyer/ProductCard";
 
 export default function Dashboard() {
-  const { fullname, role, email, updateEmail, updateFullname, updateRole } =
-    useUser();
+  const { fullname, role, email, setFullName, setARole, setCEmail } =
+    useContext(UserContext);
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [message, setMessage] = useState();
-
-  //update ARole
-  const updateARole = async () => {
-    try {
-      const responseData = await axios.patch(
-        `http://localhost:9000/api/v1/users/update-role`,
-        {}, // Empty object as no data is being sent
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
-
-      if (!responseData) {
-        throw "error";
-      } else {
-        navigate("/products");
-      }
-    } catch (error) {
-      setMessage("This is a Seller Account Only");
-      setTimeout(() => {
-        setMessage("");
-      }, 3000);
-    }
-  };
-
-  //load user
-  const getData = useCallback(
-    async (endpoint) => {
-      try {
-        const responseData = await axios.get(endpoint, {
-          withCredentials: true,
-        });
-        console.log(responseData);
-
-        if (!responseData.data.success) {
-          alert("Failed To Sync");
-          navigate("/login"); // Redirect to login if the user is not authenticated
-        } else {
-          updateFullname(responseData.data.data.fullname);
-          updateRole(responseData.data.data.activeRole);
-          updateEmail(responseData.data.data.email);
-        }
-      } catch (error) {
-        console.log(error);
-        //alert("Need to Login First");
-        //navigate("/login"); // Redirect to login in case of error
-      }
-    },
-    [navigate, updateFullname, updateRole, updateEmail]
-  );
 
   //load all products
   const getProducts = useCallback(
@@ -72,7 +20,7 @@ export default function Dashboard() {
         const responseData = await axios.get(endpoint, {
           withCredentials: true,
         });
-        console.log(responseData);
+        //console.log(responseData);
 
         if (!responseData.data.success) {
           alert("Failed To Sync Products");
@@ -80,7 +28,7 @@ export default function Dashboard() {
         } else {
           setProducts(responseData.data.data);
           if (products.length === 0) {
-            console.log(products);
+            //console.log(products);
             setMessage("No Products Available.");
           }
         }
@@ -90,90 +38,38 @@ export default function Dashboard() {
         //navigate("/login"); // Redirect to login in case of error
       }
     },
-    [updateFullname, navigate, updateRole]
+    [setFullName, navigate, setARole]
   );
 
   useEffect(() => {
-    getData("http://localhost:9000/api/v1/users/current-user");
     getProducts("http://localhost:9000/api/v1/users/get-user-products");
-  }, [getData, getProducts]);
+  }, [getProducts]);
 
   return (
     <div>
-      <header className="bg-[url('/images/background2.jpg')] bg-cover bg-center bg-no-repeat ">
-        <div className="container mx-auto px-6 max-w-7xl">
-          <nav className="flex items-center justify-between py-5 backdrop-blur-sm">
-            <div className="logo">
-              <img
-                src="./images/logo.jpg"
-                alt="Logo"
-                width={125}
-                height={125}
-              />
-            </div>
-            <div className="flex-1 text-right">
-              <ul className="inline-block list-none">
-                <li className="inline-block mr-5">
-                  <button
-                    onClick={updateARole}
-                    type="reset"
-                    className="mr-12 font-mono flex items-center justify-center bg-[blanchedalmond] text-[#4b3412] border border-[#4b3412] h-[35px] w-[70px] cursor-pointer rounded-[3px] transition-colors duration-150 hover:bg-[#4b3412] hover:text-[blanchedalmond] active:opacity-80"
-                  >
-                    {role.toUpperCase()}
-                  </button>
-                </li>
-                <li className="inline-block mr-5">
-                  <Link
-                    to="/login"
-                    className="font-mono text-lg text-[#41290c] hover:text-[#000000] pr-12"
-                  >
-                    <u>Products</u>
-                  </Link>
-                </li>
-                <li className="inline-block mr-5">
-                  <Link
-                    to="/login"
-                    className="font-mono text-lg text-[#41290c] hover:text-[#000000] pr-12"
-                  >
-                    About
-                  </Link>
-                </li>
-                <li className="inline-block mr-5">
-                  <Link
-                    to="/products"
-                    className="font-mono text-lg text-[#41290c] hover:text-[#000000] pr-12"
-                  >
-                    {fullname}
-                  </Link>
-                </li>
-              </ul>
-              <img
-                src="/images/cart.png"
-                alt="Cart"
-                width={30}
-                height={30}
-                className="inline-block mr-5"
-              />
-            </div>
-          </nav>
-        </div>
-      </header>
-      <div className="text-center text-2xl">Your Products</div>
-      <div className="text-center text-2xl">{message}</div>
+      <div className="flex items-start justify-center">
+        <Link
+          to="/listProduct"
+          className="mt-8 bg-[#41290c] text-white px-8 py-3 rounded-full hover:bg-[#775021] transition duration-300"
+        >
+          List Products &#8594;
+        </Link>
+      </div>
 
-      <footer className="bg-[#1d1010] text-center py-12">
-        <div className="container mx-auto px-6 max-w-7xl">
-          <h2 className="text-[#d9b89e] text-2xl font-bold mb-4">
-            Thank You For Visiting
-            <br />
-            ONEMOVE
-          </h2>
-          <p className="text-[#92552f]">
-            OneMove is an Ecommerce Website providing benefits to both Buyer and
-            Seller.
-          </p>
-        </div>
-      </footer>
+      <div className="mt-7 text-center text-2xl">Your Products</div>
+      <div className="text-center text-2xl">{message}</div>
+      <div className="mt-5 mb-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+        {products.map((product, index) => {
+          <Card
+            index={product._id}
+            name={product.title}
+            category={product.category}
+            price={product.price}
+            link={product.image}
+            onCardClick={handleCardClick}
+          ></Card>;
+        })}
+      </div>
     </div>
   );
 }

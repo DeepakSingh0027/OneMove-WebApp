@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../../context/userContext";
+import UserContext from "../../context/userContext";
 
 export default function Login() {
-  const { updateFullname, updateEmail, updateRole } = useUser();
+  const { setFullName, setARole, setCEmail } = useContext(UserContext);
   const [isLogin, setIsLogin] = useState(true);
   const [buyerSelected, setBuyerSelected] = useState(false);
   const [sellerSelected, setSellerSelected] = useState(false);
@@ -49,9 +49,9 @@ export default function Login() {
       const responseData = result.data;
 
       if (responseData.success) {
-        updateFullname(responseData.data.user.fullname);
-        updateRole(responseData.data.user.activeRole);
-        updateEmail(responseData.data.user.email);
+        setFullName(responseData.data.user.fullname);
+        setARole(responseData.data.user.activeRole);
+        setCEmail(responseData.data.user.email);
         setMessage(`Welcome ${responseData.data.user.fullname}`);
         setTimeout(() => {
           if (responseData.data.user.activeRole === "buyer") {
