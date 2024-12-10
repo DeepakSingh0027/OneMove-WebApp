@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../context/userContext";
-import Cookies from "js-cookie";
 
 export default function Login() {
   const { updateFullname, updateEmail, updateRole } = useUser();

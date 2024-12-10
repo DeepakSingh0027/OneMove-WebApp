@@ -29,6 +29,7 @@ export default function Products() {
       if (!responseData) {
         throw "error";
       } else {
+        updateRole("Seller");
         navigate("/Dashboard");
       }
     } catch (error) {
@@ -124,7 +125,7 @@ export default function Products() {
                     type="reset"
                     className="mr-12 font-mono flex items-center justify-center bg-[blanchedalmond] text-[#4b3412] border border-[#4b3412] h-[35px] w-[70px] cursor-pointer rounded-[3px] transition-colors duration-150 hover:bg-[#4b3412] hover:text-[blanchedalmond] active:opacity-80"
                   >
-                    {/*{role.toUpperCase}*/}BUYER
+                    {role.toUpperCase()}
                   </button>
                 </li>
                 <li className="inline-block mr-5">

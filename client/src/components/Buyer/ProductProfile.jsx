@@ -129,6 +129,8 @@ export default function productProfile() {
       </header>
       <div className="text-center text-2xl">{message}</div>
 
+      {/* display */}
+
       <footer className="bg-[#1d1010] text-center py-12">
         <div className="container mx-auto px-6 max-w-7xl">
           <h2 className="text-[#d9b89e] text-2xl font-bold mb-4">
