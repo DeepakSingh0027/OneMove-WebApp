@@ -1,15 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useUser } from "../../context/userContext";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import React, { useCallback, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Card from "./ProductCard";
 
-export default function Products() {
-  const { fullname, role, email, updateEmail, updateFullname, updateRole } =
-    useUser();
+export default function productProfile() {
+  const { id } = useParams();
   const navigate = useNavigate();
-  const [products, setProducts] = useState([]);
+  const [product, setProduct] = useState({});
   const [message, setMessage] = useState();
 
   //update ARole
@@ -39,69 +36,36 @@ export default function Products() {
     }
   };
 
-  //Product Card Click
-  const handleCardClick = (product) => {
-    navigate(`/product-profile/${product}`);
-  };
-
-  //load user
-  const getData = useCallback(
-    async (endpoint) => {
-      try {
-        const responseData = await axios.get(endpoint, {
-          withCredentials: true,
-        });
-        console.log(responseData);
-
-        if (!responseData.data.success) {
-          alert("Failed To Sync");
-          navigate("/login"); // Redirect to login if the user is not authenticated
-        } else {
-          updateFullname(responseData.data.data.fullname);
-          updateRole(responseData.data.data.activeRole);
-          updateEmail(responseData.data.data.email);
-        }
-      } catch (error) {
-        console.log(error);
-        //alert("Need to Login First");
-        //navigate("/login"); // Redirect to login in case of error
+  //data fetch
+  const getData = useCallback(async (endpoint) => {
+    try {
+      const responseData = await axios.get(endpoint, {
+        withCredentials: true,
+      });
+      console.log(responseData);
+      if (!responseData.data.data) {
+        setMessage(
+          "Couldn't find the Product, will redirecting you to PRODUCTS "
+        );
+        setTimeout(() => {
+          //navigate("/products");
+        }, 5000);
+      } else {
+        setProduct(responseData.data.data);
       }
-    },
-    [navigate, updateFullname, updateRole, updateEmail]
-  );
-
-  //load all products
-  const getProducts = useCallback(
-    async (endpoint) => {
-      try {
-        const responseData = await axios.get(endpoint, {
-          withCredentials: true,
-        });
-        console.log(responseData);
-
-        if (!responseData.data.success) {
-          alert("Failed To Sync Products");
-          //navigate("/login");
-        } else {
-          setProducts(responseData.data.data);
-          if (products.length === 0) {
-            console.log(products);
-            setMessage("No Products Available.");
-          }
-        }
-      } catch (error) {
-        console.log(error);
-        //alert("Failed To Sync Products");
-        //navigate("/login"); // Redirect to login in case of error
-      }
-    },
-    [updateFullname, navigate, updateRole]
-  );
+    } catch (error) {
+      setMessage(
+        "Couldn't find the Product, will redirecting you to PRODUCTS "
+      );
+      setTimeout(() => {
+        //navigate("/products");
+      }, 5000);
+    }
+  });
 
   useEffect(() => {
-    getData("http://localhost:9000/api/v1/users/current-user");
-    getProducts("http://localhost:9000/api/v1/products/get-all-products");
-  }, [getData, getProducts]);
+    getData(`http://localhost:9000/api/v1/products/product-profile/${id}`);
+  }, [getData]);
 
   return (
     <div>
@@ -129,7 +93,7 @@ export default function Products() {
                 </li>
                 <li className="inline-block mr-5">
                   <Link
-                    to="/products"
+                    to="/login"
                     className="font-mono text-lg text-[#41290c] hover:text-[#000000] pr-12"
                   >
                     <u>Products</u>
@@ -164,18 +128,7 @@ export default function Products() {
         </div>
       </header>
       <div className="text-center text-2xl">{message}</div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-        {products.map((product, index) => {
-          <Card
-            index={product._id}
-            name={product.title}
-            category={product.category}
-            price={product.price}
-            link={product.image}
-            onCardClick={handleCardClick}
-          ></Card>;
-        })}
-      </div>
+
       <footer className="bg-[#1d1010] text-center py-12">
         <div className="container mx-auto px-6 max-w-7xl">
           <h2 className="text-[#d9b89e] text-2xl font-bold mb-4">

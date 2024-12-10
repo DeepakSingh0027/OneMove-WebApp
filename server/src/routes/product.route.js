@@ -8,6 +8,7 @@ import {
   getProductAccToCategory,
   listProduct,
   updateLike,
+  getProductProfile,
 } from "../controllers/product.controller.js";
 
 const router = Router();
@@ -22,6 +23,8 @@ router.route("/list-product").post(
   ]),
   listProduct
 );
+
+router.route("/product-profile/:id").post(getProductProfile);
 
 router.route("/add-like").post(updateLike);
 

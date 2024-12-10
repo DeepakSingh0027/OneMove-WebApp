@@ -27,7 +27,7 @@ function DemoPage() {
               </li>
               <li>
                 <Link
-                  to="/login"
+                  to="/products"
                   className="font-mono text-lg text-[#41290c] hover:text-[#8f887b] pr-20"
                 >
                   Products

@@ -22,7 +22,7 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [usernameEmail, setUsernameEmail] = useState("");
-
+  //login form
   const loginFormSubmit = async () => {
     if (!usernameEmail || !password) {
       setMessage("Please fill in all fields.");
@@ -55,7 +55,11 @@ export default function Login() {
         updateEmail(responseData.data.user.email);
         setMessage(`Welcome ${responseData.data.user.fullname}`);
         setTimeout(() => {
-          navigate("/products");
+          if (responseData.data.user.activeRole === "buyer") {
+            navigate("/products");
+          } else {
+            navigate("/Dashboard");
+          }
         }, 100);
       } else {
         setMessage("Login failed. Please check your credentials. ");
