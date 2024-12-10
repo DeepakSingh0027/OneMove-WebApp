@@ -70,6 +70,7 @@ const listProduct = asyncHandler(async (req, res) => {
     category,
     price,
     image: imageUrl.url, // Set image URL from Cloudinary
+    categoryName,
   });
 
   if (!newProduct) {

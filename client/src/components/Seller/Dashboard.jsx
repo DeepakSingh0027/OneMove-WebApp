@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useState, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "../../context/userContext";
 import axios from "axios";
@@ -13,29 +12,33 @@ export default function Dashboard() {
   const [products, setProducts] = useState([]);
   const [message, setMessage] = useState();
 
-  //load all products
+  const handleCardClick = (productId) => {
+    navigate(`/product-profile/${productId}`);
+  };
+
+  // Load all products
   const getProducts = useCallback(
     async (endpoint) => {
       try {
         const responseData = await axios.get(endpoint, {
           withCredentials: true,
         });
-        //console.log(responseData);
+
+        console.log(responseData);
 
         if (!responseData.data.success) {
           alert("Failed To Sync Products");
-          //navigate("/login");
         } else {
-          setProducts(responseData.data.data);
-          if (products.length === 0) {
-            //console.log(products);
+          const productsData = responseData.data.data; // Store the data in a variable
+          setProducts(productsData);
+
+          // Check if productsData is empty before setting the message
+          if (productsData.length === 0) {
             setMessage("No Products Available.");
           }
         }
       } catch (error) {
         console.log(error);
-        //alert("Failed To Sync Products");
-        //navigate("/login"); // Redirect to login in case of error
       }
     },
     [setFullName, navigate, setARole]
@@ -58,17 +61,18 @@ export default function Dashboard() {
 
       <div className="mt-7 text-center text-2xl">Your Products</div>
       <div className="text-center text-2xl">{message}</div>
-      <div className="mt-5 mb-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-        {products.map((product, index) => {
+      <div className="mr-8 ml-8 mt-5 mb-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+        {products.map((product, index) => (
           <Card
+            key={product._id} // Use unique key for better performance
             index={product._id}
             name={product.title}
-            category={product.category}
+            category={product.category_name}
             price={product.price}
             link={product.image}
-            onCardClick={handleCardClick}
-          ></Card>;
-        })}
+            onCardClick={() => handleCardClick(product._id)} // Pass product ID
+          />
+        ))}
       </div>
     </div>
   );
