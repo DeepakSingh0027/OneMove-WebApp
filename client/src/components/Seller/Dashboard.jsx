@@ -13,7 +13,7 @@ export default function Dashboard() {
   const [message, setMessage] = useState();
 
   const handleCardClick = (productId) => {
-    navigate(`/product-profile/${productId}`);
+    navigate(`/pprofile/${productId}`);
   };
 
   // Load all products

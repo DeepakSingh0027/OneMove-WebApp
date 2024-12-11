@@ -9,7 +9,6 @@ export default function Header() {
   const { fullname, role, email, setFullName, setARole, setCEmail } =
     useContext(UserContext);
   const navigate = useNavigate();
-  const [message, setMessage] = useState();
 
   //update ARole
   const updateARole = async () => {
@@ -36,9 +35,7 @@ export default function Header() {
       }
     } catch (error) {
       alert(`This is a ${role} account Only`);
-      setTimeout(() => {
-        setMessage("");
-      }, 3000);
+      setTimeout(() => {}, 3000);
     }
   };
 
@@ -120,14 +117,28 @@ export default function Header() {
                     {fullname}
                   </Link>
                 </li>
+                {role === "buyer" && (
+                  <li className="inline-block mr-5">
+                    <Link
+                      to="/order"
+                      className="font-mono text-lg text-[#41290c] hover:text-[#000000] pr-12"
+                    >
+                      Orders
+                    </Link>
+                  </li>
+                )}
               </ul>
-              <img
-                src="/images/cart.png"
-                alt="Cart"
-                width={30}
-                height={30}
-                className="inline-block mr-5"
-              />
+              {role === "buyer" && (
+                <Link to={"/cart"}>
+                  <img
+                    src="/images/cart.png"
+                    alt="Cart"
+                    width={30}
+                    height={30}
+                    className="inline-block mr-5"
+                  />
+                </Link>
+              )}
             </div>
           </nav>
         </div>

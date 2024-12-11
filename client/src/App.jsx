@@ -10,6 +10,9 @@ import Dashboard from "./components/Seller/Dashboard";
 import ListProduct from "./components/Seller/listProduct";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Cart from "./components/Buyer/Cart";
+import Order from "./components/Buyer/Orders";
+import PProfile from "./components/Seller/Productprofile2";
 
 function App() {
   return (
@@ -54,6 +57,36 @@ function App() {
               <>
                 <Header />
                 <ListProduct />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <>
+                <Header />
+                <Cart />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/order"
+            element={
+              <>
+                <Header />
+                <Order />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/pprofile/:id"
+            element={
+              <>
+                <Header />
+                <PProfile />
                 <Footer />
               </>
             }
