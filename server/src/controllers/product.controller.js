@@ -20,7 +20,7 @@ const listProduct = asyncHandler(async (req, res) => {
   } = req.body;
 
   const sellerId = req.user._id;
-
+  const category_name = categoryName;
   //console.log(categoryName)
   if (
     !title ||
@@ -70,7 +70,7 @@ const listProduct = asyncHandler(async (req, res) => {
     category,
     price,
     image: imageUrl.url, // Set image URL from Cloudinary
-    categoryName,
+    category_name,
   });
 
   if (!newProduct) {

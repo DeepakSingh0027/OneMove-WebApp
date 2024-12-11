@@ -24,7 +24,7 @@ router.route("/list-product").post(
   listProduct
 );
 
-router.route("/product-profile/:id").post(getProductProfile);
+router.route("/product-profile/:id").get(getProductProfile);
 
 router.route("/add-like").post(updateLike);
 

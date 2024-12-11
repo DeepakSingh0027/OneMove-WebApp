@@ -28,11 +28,12 @@ export default function Products() {
 
         if (!responseData.data.success) {
           alert("Failed To Sync Products");
-          //navigate("/login");
         } else {
-          setProducts(responseData.data.data);
-          if (products.length === 0) {
-            console.log(products);
+          const productsData = responseData.data.data; // Store the data in a variable
+          setProducts(productsData);
+
+          // Check if productsData is empty before setting the message
+          if (productsData.length === 0) {
             setMessage("No Products Available.");
           }
         }
@@ -52,17 +53,18 @@ export default function Products() {
   return (
     <div>
       <div className="mt-8 mb-8 text-center text-2xl">{message}</div>
-      <div className="mt-5 mb-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-        {products.map((product, index) => {
+      <div className="mr-8 ml-8 mt-5 mb-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+        {products.map((product, index) => (
           <Card
+            key={product._id} // Use unique key for better performance
             index={product._id}
             name={product.title}
-            category={product.category}
+            category={product.category_name}
             price={product.price}
             link={product.image}
-            onCardClick={handleCardClick}
-          ></Card>;
-        })}
+            onCardClick={() => handleCardClick(product._id)} // Pass product ID
+          />
+        ))}
       </div>
     </div>
   );
