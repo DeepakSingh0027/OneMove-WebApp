@@ -127,6 +127,16 @@ export default function Header() {
                     </Link>
                   </li>
                 )}
+                {role != "buyer" && (
+                  <li className="inline-block mr-5">
+                    <Link
+                      to="/orderS"
+                      className="font-mono text-lg text-[#41290c] hover:text-[#000000] pr-12"
+                    >
+                      Orders
+                    </Link>
+                  </li>
+                )}
               </ul>
               {role === "buyer" && (
                 <Link to={"/cart"}>

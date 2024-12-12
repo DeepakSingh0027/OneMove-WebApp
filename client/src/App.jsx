@@ -13,6 +13,7 @@ import Footer from "./components/Footer";
 import Cart from "./components/Buyer/Cart";
 import Order from "./components/Buyer/Orders";
 import PProfile from "./components/Seller/Productprofile2";
+import OrderS from "./components/Seller/OrderS";
 
 function App() {
   return (
@@ -87,6 +88,16 @@ function App() {
               <>
                 <Header />
                 <PProfile />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/orderS"
+            element={
+              <>
+                <Header />
+                <OrderS />
                 <Footer />
               </>
             }
