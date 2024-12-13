@@ -12,6 +12,6 @@ router.route("/list-cart").post(verifyJWT, addToCart);
 
 router.route("/get-cart").get(verifyJWT, getCartDetails);
 
-router.route("/remove-item-cart/:itemId").patch(verifyJWT, removeFromCart);
+router.route("/remove-item-cart/:id").patch(verifyJWT, removeFromCart);
 
 export default router;

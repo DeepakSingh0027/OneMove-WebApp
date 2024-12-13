@@ -6,9 +6,13 @@ export default function Urequest() {
   const navigate = useNavigate();
   const handleUR = async () => {
     for (let index = 3; index >= 0; index--) {
-      setCount(index);
+      setTimeout(() => {
+        setCount(index);
+      }, 1000);
     }
-    navigate("/login");
+    setTimeout(() => {
+      navigate("/login");
+    }, 3000);
   };
 
   useEffect(() => {

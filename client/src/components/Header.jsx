@@ -77,7 +77,6 @@ export default function Header() {
         }
       } catch (error) {
         console.log(error);
-        alert("Need to Login First");
         navigate("/Urequest"); // Redirect to login in case of error
       }
     },

@@ -32,7 +32,9 @@ export default function CartCard({ id, quantity, item, onRemove, value }) {
   // Handle the removal of the item from the cart
   const handleRemove = () => {
     if (onRemove) {
-      onRemove(item); // Call the remove handler passed from the parent
+      console.log(id);
+
+      onRemove(id); // Call the remove handler passed from the parent
     }
   };
 

@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { Cart } from "../models/cart.model.js";
 import { Product } from "../models/product.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import mongoose from "mongoose";
 
 const addToCart = asyncHandler(async (req, res) => {
   const { productID, quantity } = req.body;
@@ -46,31 +47,36 @@ const getCartDetails = asyncHandler(async (req, res) => {
 });
 
 const removeFromCart = asyncHandler(async (req, res) => {
-  const { itemId } = req.params;
+  const { id } = req.params;
 
-  if (!itemId) {
-    throw new ApiError(400, "Item ID is required");
+  // Validate the id and convert it to ObjectId
+  if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError(400, "Invalid or missing cart item ID");
   }
 
-  const cartItem = await Cart.findById(itemId);
+  console.log(id);
 
-  if (!cartItem) {
-    throw new ApiError(404, "Cart item not found");
-  }
+  //const deletedItem = await Cart.findByIdAndDelete(id);
+  // Convert both _id and owner to ObjectId
+  const deletedItem = await Cart.findOneAndDelete({
+    product: id, // Ensure _id is an ObjectId
+    owner: req.user._id, // Ensure owner is an ObjectId
+  });
 
-  if (cartItem.owner.toString() !== req.user._id.toString()) {
-    throw new ApiError(403, "You do not have permission to remove this item");
-  }
-
-  const deletedItem = await Cart.findByIdAndDelete(itemId);
+  console.log(deletedItem);
 
   if (!deletedItem) {
-    throw new ApiError(500, "Failed to remove the item from the cart");
+    throw new ApiError(
+      404,
+      "Cart item not found or you do not have permission to remove it"
+    );
   }
 
   return res
     .status(200)
-    .json(new ApiResponse(200, deletedItem, "Item removed from cart"));
+    .json(
+      new ApiResponse(200, deletedItem, "Item removed from cart successfully")
+    );
 });
 
 export { addToCart, getCartDetails, removeFromCart };

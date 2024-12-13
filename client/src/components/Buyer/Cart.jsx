@@ -2,11 +2,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CartCard from "./CartCard";
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]); // State to hold cart items
   const [loading, setLoading] = useState(true); // State to handle loading state
   const [error, setError] = useState(null); // State to handle errors
+  const [Message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   // Fetch cart items from the backend
   useEffect(() => {
@@ -41,9 +44,11 @@ function Cart() {
           withCredentials: true,
         }
       ); // Assuming the endpoint to delete a cart item
-      setCartItems((prevItems) =>
-        prevItems.filter((item) => item._id !== itemId)
-      ); // Remove the item from the local state
+      setMessage("Item Removed");
+      setTimeout(() => {
+        setMessage("");
+      }, 5000);
+      navigate(0);
     } catch (error) {
       setError(error.message);
     }
@@ -54,9 +59,10 @@ function Cart() {
 
   return (
     <div>
+      <div className="mt-7 text-center text-2xl">{Message}</div>
       <h1 className="mt-8 mb-8 text-center text-2xl">Your Cart</h1>
       {cartItems.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <p className="mt-7 text-center text-2xl">Your cart is empty.</p>
       ) : (
         <ul>
           {cartItems.map((item, index) => (
