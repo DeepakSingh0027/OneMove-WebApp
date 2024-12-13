@@ -17,6 +17,7 @@ export default function ListProduct() {
   const [categoryDesp, setCategoryDesp] = useState("");
   const [image, setImage] = useState(null);
   const [price, setPrice] = useState("");
+  const [specificationList, setSpecificationList] = useState([]);
 
   const navigate = useNavigate();
   const [message, setMessage] = useState();
@@ -84,7 +85,7 @@ export default function ListProduct() {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
-    formData.append("specifications", specification);
+    formData.append("specifications", specificationList);
     formData.append("quantity", quantity);
     formData.append("categoryName", category);
     formData.append("categoryDescription", categoryDesp);
@@ -120,6 +121,13 @@ export default function ListProduct() {
     }
   };
 
+  //Handle Plus
+  const handlePlus = (e) => {
+    e.preventDefault();
+    setSpecificationList((prev) => [...prev, specification]);
+    setSpecification("");
+  };
+
   // Handle image file change
   const handleImageFileChange = (event) => {
     const file = event.target.files[0];
@@ -134,102 +142,152 @@ export default function ListProduct() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="text-center">
-        <div className="text-2xl ">{message}</div>
+    <div className="flex items-center justify-center min-h-screen mt-10">
+      <div className="text-center w-full max-w-[600px]">
+        {message && (
+          <div className="text-xl bg-red-100 text-red-600 p-3 mb-5 rounded-lg ">
+            {message}
+          </div>
+        )}
         <form
-          className="max-w-[300px] p-5 bg-white rounded-lg shadow-lg"
+          className="w-full p-10 rounded-xl transition-all"
           onSubmit={(e) => {
             e.preventDefault();
             List();
           }}
         >
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Title"
-            className="w-full h-[40px] my-3 px-3 border border-[#fea069] rounded"
-            required
-          />
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Description"
-            className="w-full h-[40px] my-3 px-3 border border-[#fea069] rounded"
-            required
-          />
-          <input
-            type="text"
-            value={specification}
-            onChange={(e) => setSpecification(e.target.value)}
-            placeholder="Specification"
-            className="w-full h-[40px] my-3 px-3 border border-[#fea069] rounded"
-          />
-          <input
-            type="number"
-            value={quantity}
-            onChange={(e) => {
-              if (e.target.value < 0) {
-                setMessage("Quantity cannot be Negative.");
-                setTimeout(() => {
-                  setMessage("");
-                }, 3000);
-                setQuantity(0);
-              } else {
-                setQuantity(e.target.value);
-              }
-            }}
-            placeholder="Quantity"
-            className="w-full h-[40px] my-3 px-3 border border-[#fea069] rounded"
-            required
-          />
-          <input
-            type="text"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            placeholder="Category"
-            className="w-full h-[40px] my-3 px-3 border border-[#fea069] rounded"
-            required
-          />
-          <input
-            type="text"
-            value={categoryDesp}
-            onChange={(e) => setCategoryDesp(e.target.value)}
-            placeholder="Category Description"
-            className="w-full h-[40px] my-3 px-3 border border-[#fea069] rounded"
-          />
-          <input
-            type="file"
-            id="image"
-            accept="image/*"
-            onChange={handleImageFileChange}
-            className="border p-2 w-full my-3"
-            required
-          />
-          <input
-            type="number"
-            value={price}
-            onChange={(e) => {
-              if (e.target.value < 0) {
-                setMessage("Price cannot be Negative.");
-                setTimeout(() => {
-                  setMessage("");
-                }, 3000);
-                setPrice(0);
-              } else {
-                setPrice(e.target.value);
-              }
-            }}
-            placeholder="Price"
-            className="w-full h-[40px] my-3 px-3 border border-[#fea069] rounded"
-          />
+          <h2 className="text-4xl font-bold mb-8 text-[#41290c]">
+            List Your Product
+          </h2>
+
+          {/* Title Input */}
+          <div className="relative mb-6">
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder=" "
+              className="input-field"
+              required
+            />
+            <label className="input-label">Title</label>
+          </div>
+
+          {/* Description Input */}
+          <div className="relative mb-6">
+            <input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder=" "
+              className="input-field"
+              required
+            />
+            <label className="input-label">Description</label>
+          </div>
+
+          {/* Specification Input */}
+          <div className="relative mb-6 flex">
+            <input
+              type="text"
+              value={specification}
+              onChange={(e) => setSpecification(e.target.value)}
+              placeholder=" "
+              className="input-field"
+            />
+            <label className="input-label">Specification</label>
+            <p
+              onClick={handlePlus}
+              className="text-[#8c4313] pl-2 text-5xl cursor-pointer"
+            >
+              &#43;
+            </p>
+          </div>
+
+          {/* Quantity Input */}
+          <div className="relative mb-6">
+            <input
+              type="number"
+              value={quantity}
+              onChange={(e) => {
+                if (e.target.value < 0) {
+                  setMessage("Quantity cannot be Negative.");
+                  setTimeout(() => setMessage(""), 3000);
+                  setQuantity(0);
+                } else {
+                  setQuantity(e.target.value);
+                }
+              }}
+              placeholder=" "
+              className="input-field"
+              required
+            />
+            <label className="input-label">Quantity</label>
+          </div>
+
+          {/* Category Input */}
+          <div className="relative mb-6">
+            <input
+              type="text"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              placeholder=" "
+              className="input-field"
+              required
+            />
+            <label className="input-label">Category</label>
+          </div>
+
+          {/* Category Description Input */}
+          <div className="relative mb-6">
+            <input
+              type="text"
+              value={categoryDesp}
+              onChange={(e) => setCategoryDesp(e.target.value)}
+              placeholder=" "
+              className="input-field"
+            />
+            <label className="input-label">Category Description</label>
+          </div>
+
+          {/* Image File Input */}
+          <div className="relative mb-6">
+            <input
+              type="file"
+              id="image"
+              accept="image/*"
+              onChange={handleImageFileChange}
+              className="input-file"
+              required
+            />
+          </div>
+
+          {/* Price Input */}
+          <div className="relative mb-6">
+            <input
+              type="number"
+              value={price}
+              onChange={(e) => {
+                if (e.target.value < 0) {
+                  setMessage("Price cannot be Negative.");
+                  setTimeout(() => setMessage(""), 3000);
+                  setPrice(0);
+                } else {
+                  setPrice(e.target.value);
+                }
+              }}
+              placeholder=" "
+              className="input-field"
+            />
+            <label className="input-label">Price</label>
+          </div>
+
+          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-[#41290c] text-white rounded-full py-3 hover:bg-[#402718] transition-all duration-300"
+            className="w-full bg-[#41290c] text-white py-4 rounded-full font-semibold text-lg mt-3 hover:bg-[#402718] hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg"
           >
-            List
+            List Product
           </button>
         </form>
       </div>

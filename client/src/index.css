@@ -140,3 +140,24 @@ body {
   transform: translateY(-5px); /* Bounce text on hover */
   transition: transform 0.2s ease;
 }
+
+.input-field {
+  @apply w-full px-4 py-4 text-sm bg-transparent border-2 border-[#fea069] rounded-lg outline-none focus:ring-2 focus:ring-[#fea069] transition-all;
+}
+
+.input-field::placeholder {
+  @apply text-transparent;
+}
+
+.input-label {
+  @apply absolute left-4 top-3 text-gray-600 transition-all;
+}
+
+.input-field:focus + .input-label,
+.input-field:not(:placeholder-shown) + .input-label {
+  @apply -translate-y-4 scale-90 text-[#fea069];
+}
+
+.input-file {
+  @apply w-full p-2 border-2 border-[#fea069] rounded-lg bg-white file:bg-[#fea069] file:text-white file:py-2 file:px-4 file:rounded-full file:border-0 transition-all;
+}
