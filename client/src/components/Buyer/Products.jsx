@@ -39,8 +39,8 @@ export default function Products() {
         }
       } catch (error) {
         console.log(error);
-        //alert("Failed To Sync Products");
-        //navigate("/login"); // Redirect to login in case of error
+        alert("Failed To Sync Products");
+        navigate("/login"); // Redirect to login in case of error
       }
     },
     [setFullName, navigate, setARole]
@@ -52,19 +52,21 @@ export default function Products() {
 
   return (
     <div>
-      <div className="mt-8 mb-8 text-center text-2xl">{message}</div>
-      <div className="mr-8 ml-8 mt-5 mb-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-        {products.map((product, index) => (
-          <Card
-            key={product._id} // Use unique key for better performance
-            index={product._id}
-            name={product.title}
-            category={product.category_name}
-            price={product.price}
-            link={product.image}
-            onCardClick={() => handleCardClick(product._id)} // Pass product ID
-          />
-        ))}
+      <div className="max-w-[1200px] mx-auto px-[25px]">
+        <div className="mt-8 mb-8 text-center text-2xl">{message}</div>
+        <div className="mr-8 ml-8 mt-5 mb-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+          {products.map((product, index) => (
+            <Card
+              key={product._id} // Use unique key for better performance
+              index={product._id}
+              name={product.title}
+              category={product.category_name}
+              price={product.price}
+              link={product.image}
+              onCardClick={() => handleCardClick(product._id)} // Pass product ID
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

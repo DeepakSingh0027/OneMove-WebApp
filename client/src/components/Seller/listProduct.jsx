@@ -136,7 +136,7 @@ export default function ListProduct() {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="text-center">
-        <div className="text-2xl mb-4 ">{message}</div>
+        <div className="text-2xl ">{message}</div>
         <form
           className="max-w-[300px] p-5 bg-white rounded-lg shadow-lg"
           onSubmit={(e) => {

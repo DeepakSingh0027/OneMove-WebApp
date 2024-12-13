@@ -35,3 +35,108 @@ body {
   color: #412608;
   transform: scale(1.1);
 }
+
+/* Glowing border effect */
+.glowing-border {
+  position: relative;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(255, 179, 102, 0.6);
+  animation: glowing-border 2s infinite alternate;
+}
+
+@keyframes glowing-border {
+  0% {
+    border: 3px solid rgba(255, 179, 102, 0.3);
+    box-shadow: 0 0 8px rgba(255, 179, 102, 0.6);
+  }
+  50% {
+    border: 3px solid rgba(255, 179, 102, 0.8);
+    box-shadow: 0 0 15px rgba(255, 179, 102, 1);
+  }
+  100% {
+    border: 3px solid rgba(255, 179, 102, 0.3);
+    box-shadow: 0 0 8px rgba(255, 179, 102, 0.6);
+  }
+}
+
+/* Glowing text effect */
+.glowing-text {
+  color: #d1b073;
+  animation: glowing-text 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glowing-text {
+  0% {
+    text-shadow: 0 0 5px rgba(255, 179, 102, 0.5),
+      0 0 10px rgba(255, 179, 102, 0.7);
+  }
+  50% {
+    text-shadow: 0 0 10px rgba(255, 179, 102, 1),
+      0 0 20px rgba(255, 179, 102, 1);
+  }
+  100% {
+    text-shadow: 0 0 5px rgba(255, 179, 102, 0.5),
+      0 0 10px rgba(255, 179, 102, 0.7);
+  }
+}
+
+/* Style for the button */
+/* Button style */
+.fun-button {
+  position: relative;
+  padding: 1rem 2rem;
+  background-color: #41290c;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 50px;
+  display: inline-block;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* Pulsating Border Effect */
+.fun-button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #fff;
+  border-radius: 50px;
+  transform: translate(-50%, -50%);
+  animation: pulse 2s infinite ease-in-out;
+  opacity: 0.6;
+}
+
+/* Floating and Color Change Effect */
+.fun-button:hover {
+  background-color: #775021; /* Change background color */
+  transform: translateY(-6px); /* Slight floating effect */
+}
+
+/* Pulsating Border Keyframes */
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+}
+
+/* Hover State - Bounce Text */
+.fun-button:hover span {
+  transform: translateY(-5px); /* Bounce text on hover */
+  transition: transform 0.2s ease;
+}

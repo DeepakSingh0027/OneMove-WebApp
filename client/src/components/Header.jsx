@@ -39,6 +39,25 @@ export default function Header() {
     }
   };
 
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:9000/api/v1/users/logout",
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      navigate("/login");
+    } catch (error) {
+      alert("Logout Button not Working");
+    }
+  };
+
   //load user
   const getData = useCallback(
     async (endpoint) => {
@@ -50,7 +69,7 @@ export default function Header() {
 
         if (!responseData.data.success) {
           alert("Failed To Sync");
-          //navigate("/login"); // Redirect to login if the user is not authenticated
+          navigate("/login"); // Redirect to login if the user is not authenticated
         } else {
           setFullName(responseData.data.data.fullname);
           setARole(responseData.data.data.activeRole);
@@ -59,7 +78,7 @@ export default function Header() {
       } catch (error) {
         console.log(error);
         alert("Need to Login First");
-        //navigate("/login"); // Redirect to login in case of error
+        navigate("/login"); // Redirect to login in case of error
       }
     },
     [navigate, setFullName, setARole, setCEmail]
@@ -84,36 +103,36 @@ export default function Header() {
             </div>
             <div className="flex-1 text-right">
               <ul className="inline-block list-none">
-                <li className="inline-block mr-5">
+                <li className="inline-block mr-14">
                   <button
                     onClick={updateARole}
                     type="reset"
-                    className="mr-12 font-mono flex items-center justify-center bg-[blanchedalmond] text-[#4b3412] border border-[#4b3412] h-[35px] w-[70px] cursor-pointer rounded-[3px] transition-colors duration-150 hover:bg-[#4b3412] hover:text-[blanchedalmond] active:opacity-80"
+                    className="bg-[#5b1414] px-3 py-1 text-[#c99d6b] rounded-lg font-medium relative overflow-hidden transition-all duration-300 hover:bg-[#c99d6b] hover:text-[#5b1414] hover:scale-105 active:scale-95"
                   >
+                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#9dced2] to-[#5b1414] opacity-0 hover:opacity-10 transition-opacity"></span>
                     {role.toUpperCase()}
                   </button>
                 </li>
+                {role === "buyer" && (
+                  <li className="inline-block mr-5">
+                    <Link
+                      to="/products"
+                      className="font-mono text-lg text-[#41290c] hover:text-[#000000] pr-12"
+                    >
+                      <u>Products</u>
+                    </Link>
+                  </li>
+                )}
                 <li className="inline-block mr-5">
                   <Link
-                    to="/login"
-                    className="font-mono text-lg text-[#41290c] hover:text-[#000000] pr-12"
-                  >
-                    <u>Products</u>
-                  </Link>
-                </li>
-                <li className="inline-block mr-5">
-                  <Link
-                    to="/login"
+                    to="/products"
                     className="font-mono text-lg text-[#41290c] hover:text-[#000000] pr-12"
                   >
                     About
                   </Link>
                 </li>
                 <li className="inline-block mr-5">
-                  <Link
-                    to="/products"
-                    className="font-mono text-lg text-[#41290c] hover:text-[#000000] pr-12"
-                  >
+                  <Link className="font-mono text-lg text-[#41290c] hover:text-[#000000] pr-12">
                     {fullname}
                   </Link>
                 </li>
@@ -127,16 +146,15 @@ export default function Header() {
                     </Link>
                   </li>
                 )}
-                {role != "buyer" && (
-                  <li className="inline-block mr-5">
-                    <Link
-                      to="/orderS"
-                      className="font-mono text-lg text-[#41290c] hover:text-[#000000] pr-12"
-                    >
-                      Orders
-                    </Link>
-                  </li>
-                )}
+                <li className="inline-block mr-12">
+                  <button
+                    onClick={handleLogout}
+                    className="bg-[#5b1414] px-3 py-1 text-[#c99d6b] rounded-lg font-medium relative overflow-hidden transition-all duration-300 hover:bg-[#c99d6b] hover:text-[#5b1414] hover:scale-105 active:scale-95"
+                  >
+                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#9dced2] to-[#5b1414] opacity-0 hover:opacity-10 transition-opacity"></span>
+                    Logout
+                  </button>
+                </li>
               </ul>
               {role === "buyer" && (
                 <Link to={"/cart"}>

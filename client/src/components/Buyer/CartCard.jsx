@@ -37,52 +37,61 @@ export default function CartCard({ id, quantity, item, onRemove, value }) {
   };
 
   return (
-    <div>
-      <li className="cart-item flex items-center justify-between p-4 bg-[#995634] rounded-lg shadow-md mb-7 ml-20 mr-20">
+    <div className="max-w-[1200px] mx-auto px-[25px]">
+      <li className="cart-item flex items-center justify-between p-6 bg-[#995634] rounded-xl shadow-md mb-7 mx-20 transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:border-2 hover:border-[#9dced2] hover:ring-2 hover:ring-[#9dced2]">
         {/* Display message if no product found */}
         {message && (
           <div className="mt-8 mb-8 text-center text-2xl">{message}</div>
         )}
-        {/* Display product image */}
-        {product.image && (
+
+        {/* Product Image with 3D Tilt and Zoom */}
+        {product.image ? (
           <img
             src={product.image}
             alt={product.title}
-            className="w-20 h-20 rounded-lg object-cover mr-4"
+            className="w-24 h-24 rounded-lg object-cover mr-6 transform transition-all duration-300 hover:scale-110 hover:rotate-1 hover:shadow-xl cursor-pointer"
             onClick={(e) => {
               e.preventDefault();
               navigate(`/product-profile/${product._id}`);
             }}
           />
+        ) : (
+          <div className="w-24 h-24 bg-gray-300 rounded-lg mr-6" />
         )}
+
+        {/* Product Info */}
         <div
-          className="flex-1"
+          className="flex-1 transition-all duration-300 hover:translate-x-1 cursor-pointer"
           onClick={(e) => {
             e.preventDefault();
             navigate(`/product-profile/${product._id}`);
           }}
         >
-          {/* Display product title and details */}
-          <h3 className="text-lg font-semibold text-gray-800">
+          <h3 className="text-lg font-semibold text-gray-800 hover:text-gray-900 transition-colors duration-300">
             {product.title}
           </h3>
-          <p className="text-sm mt-1">
-            Price:{" "}
-            <span className="font-bold text-[#9dced2]">${product.price}</span>
+          <p className="text-sm mt-2">
+            Price:
+            <span className="font-bold text-[#9dced2]">
+              {" "}
+              &#8377; {product.price}
+            </span>
           </p>
-          <p className="text-sm text-[#94a9b1] mt-1">Quantity: {quantity}</p>
+          <p className="text-sm text-[#94a9b1] mt-2">Quantity: {quantity}</p>
         </div>
-        {/* Remove button */}
-        {value && (
+
+        {/* Interactive Buttons */}
+        {value ? (
           <button
             onClick={handleRemove}
-            className="bg-[#5b1414] text-[#c99d6b] px-4 py-2 rounded-lg font-medium hover:text-[#5b1414] hover:bg-[#c99d6b] transition duration-300"
+            className="bg-[#5b1414] text-[#c99d6b] px-6 py-3 rounded-lg font-medium relative overflow-hidden transition-all duration-300 hover:bg-[#c99d6b] hover:text-[#5b1414] hover:scale-105 active:scale-95"
           >
+            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#9dced2] to-[#5b1414] opacity-0 hover:opacity-10 transition-opacity"></span>
             Remove
           </button>
-        )}
-        {!value && (
-          <button className="bg-[#5b1414] text-[#c99d6b] px-4 py-2 rounded-lg font-medium hover:text-[#5b1414] hover:bg-[#c99d6b] transition duration-300">
+        ) : (
+          <button className="bg-[#5b1414] text-[#c99d6b] px-6 py-3 rounded-lg font-medium relative overflow-hidden transition-all duration-300 hover:bg-[#c99d6b] hover:text-[#5b1414] hover:scale-105 active:scale-95">
+            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#9dced2] to-[#5b1414] opacity-0 hover:opacity-10 transition-opacity"></span>
             Shipping Details
           </button>
         )}

@@ -92,16 +92,6 @@ function App() {
               </>
             }
           />
-          <Route
-            path="/orderS"
-            element={
-              <>
-                <Header />
-                <OrderS />
-                <Footer />
-              </>
-            }
-          />
         </Routes>
       </Router>
     </UserContextProvider>
