@@ -14,6 +14,7 @@ import Cart from "./components/Buyer/Cart";
 import Order from "./components/Buyer/Orders";
 import PProfile from "./components/Seller/Productprofile2";
 import OrderS from "./components/Seller/OrderS";
+import Urequest from "./components/URequest";
 
 function App() {
   return (
@@ -92,6 +93,7 @@ function App() {
               </>
             }
           />
+          <Route path="/Urequest" element={<Urequest />} />
         </Routes>
       </Router>
     </UserContextProvider>

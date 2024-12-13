@@ -69,7 +69,7 @@ export default function Header() {
 
         if (!responseData.data.success) {
           alert("Failed To Sync");
-          navigate("/login"); // Redirect to login if the user is not authenticated
+          navigate("/Urequest"); // Redirect to login if the user is not authenticated
         } else {
           setFullName(responseData.data.data.fullname);
           setARole(responseData.data.data.activeRole);
@@ -78,7 +78,7 @@ export default function Header() {
       } catch (error) {
         console.log(error);
         alert("Need to Login First");
-        navigate("/login"); // Redirect to login in case of error
+        navigate("/Urequest"); // Redirect to login in case of error
       }
     },
     [navigate, setFullName, setARole, setCEmail]
