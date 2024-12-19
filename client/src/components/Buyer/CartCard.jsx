@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios"; // Import axios
 import { useNavigate } from "react-router-dom";
 
-export default function CartCard({ id, quantity, item, onRemove, value }) {
+export default function CartCard({ id, quantity, itemId, onRemove, value }) {
   const [product, setProduct] = useState({});
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export default function CartCard({ id, quantity, item, onRemove, value }) {
     if (onRemove) {
       console.log(id);
 
-      onRemove(id); // Call the remove handler passed from the parent
+      onRemove(itemId); // Call the remove handler passed from the parent
     }
   };
 

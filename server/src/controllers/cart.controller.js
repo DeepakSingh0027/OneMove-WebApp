@@ -59,7 +59,7 @@ const removeFromCart = asyncHandler(async (req, res) => {
   //const deletedItem = await Cart.findByIdAndDelete(id);
   // Convert both _id and owner to ObjectId
   const deletedItem = await Cart.findOneAndDelete({
-    product: id, // Ensure _id is an ObjectId
+    _id: id, // Ensure _id is an ObjectId
     owner: req.user._id, // Ensure owner is an ObjectId
   });
 
