@@ -36,7 +36,9 @@ export default function Order() {
     <div>
       <h1 className="mt-8 mb-8 text-center text-2xl">Your Orders</h1>
       {orderItems.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <p className="mt-8 mb-1 text-center text-2xl">
+          You have No orders till date..
+        </p>
       ) : (
         <ul>
           {orderItems.map((item, index) => (

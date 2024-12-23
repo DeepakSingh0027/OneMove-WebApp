@@ -110,11 +110,11 @@ export default function Products() {
 
       <section className="py-6">
         <div className="max-w-[1080px] mx-auto px-6 sm:px-12">
-          <h2 className="text-3xl font-bold text-center mb-8 ">
+          <h2 className="text-3xl font-bold text-center mb-16 text-[#41290c]">
             Exclusive Categories
           </h2>
-          <div className="flex flex-wrap -mx-4">
-            {["Fashion", "Beauty", "Technology"].map((category, i) => (
+          <div className="flex flex-wrap -mx-4 mt-12">
+            {["Beauty", "Fashion", "Activewear"].map((category, i) => (
               <div key={i} className="w-full sm:w-1/2 lg:w-1/3 px-4 mb-8 group">
                 <div className="overflow-hidden rounded-lg shadow-md bg-white">
                   <img
@@ -132,8 +132,8 @@ export default function Products() {
         </div>
       </section>
 
-      <div className="max-w-[1200px] mx-auto px-[25px]">
-        <div className="text-3xl font-bold text-center mb-8 pb-5">
+      <div className="max-w-[1200px] mx-auto px-[25px] pt-[15px]">
+        <div className="text-3xl font-bold text-center mb-8 pb-5 text-[#41290c]">
           Exclusive Products
         </div>
         <div className="mt-8 mb-8 text-center text-2xl">{message}</div>
