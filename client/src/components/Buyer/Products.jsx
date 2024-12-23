@@ -39,8 +39,7 @@ export default function Products() {
         }
       } catch (error) {
         console.log(error);
-        alert("Failed To Sync Products");
-        navigate("/login"); // Redirect to login in case of error
+        navigate("/Urequest"); // Redirect to login in case of error
       }
     },
     [setFullName, navigate, setARole]
