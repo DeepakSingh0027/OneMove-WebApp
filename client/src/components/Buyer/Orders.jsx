@@ -49,6 +49,7 @@ export default function Order() {
               itemId={item._id} // Assuming you want to pass the cart item id
               onRemove={null} // Pass the remove handler if CartCard needs it
               value={false}
+              updates={item.updates}
             />
           ))}
         </ul>

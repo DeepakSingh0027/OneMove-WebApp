@@ -13,6 +13,10 @@ const listOrder = asyncHandler(async (req, res, next) => {
 
   // Validate input
   if (!productID || !quantity || !address) {
+    console.log(productID);
+    console.log(quantity);
+    console.log(address);
+
     throw new ApiError(400, "All fields necessary");
   }
 
@@ -81,4 +85,25 @@ const getOrderSold = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, filteredItems, "ProductSold Fetched"));
 });
 
-export { listOrder, getOrderSold, getOrder };
+const shippmentUpdate = asyncHandler(async (req, res) => {
+  const { updates, id } = req.body;
+  if (!id || !updates) {
+    throw new ApiError(400, "All Field necessary");
+  }
+
+  // Find the order and update the shipment status
+  const updatedOrder = await Order.findByIdAndUpdate(
+    id,
+    { updates }, // Directly update the `updates` field
+    { new: true } // Return the updated document
+  );
+
+  if (!updatedOrder) {
+    throw new ApiError(500, "Order not found");
+  }
+  return res
+    .status(201)
+    .json(new ApiResponse(200, updatedOrder, "Shippment Updated"));
+});
+
+export { listOrder, getOrderSold, getOrder, shippmentUpdate };

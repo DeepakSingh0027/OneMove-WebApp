@@ -2,7 +2,14 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios"; // Import axios
 import { useNavigate } from "react-router-dom";
 
-export default function CartCard({ id, quantity, itemId, onRemove, value }) {
+export default function CartCard({
+  id,
+  quantity,
+  itemId,
+  onRemove,
+  value,
+  updates,
+}) {
   const [product, setProduct] = useState({});
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -94,7 +101,7 @@ export default function CartCard({ id, quantity, itemId, onRemove, value }) {
         ) : (
           <button className="bg-[#5b1414] text-[#c99d6b] px-6 py-3 rounded-lg font-medium relative overflow-hidden transition-all duration-300 hover:bg-[#c99d6b] hover:text-[#5b1414] hover:scale-105 active:scale-95">
             <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#9dced2] to-[#5b1414] opacity-0 hover:opacity-10 transition-opacity"></span>
-            Shipping Details
+            {updates}
           </button>
         )}
       </li>

@@ -83,10 +83,12 @@ export default function OrderS({ totalProducts }) {
           {orderItems.map((item) => (
             <OrderCard
               key={item._id} // Use unique key for list rendering
-              id={item.product._id} // Pass the product ID to the child component
+              Pid={item.product._id} // Pass the product ID to the child component
               quantity={item.quantity}
               item={item._id} // Pass the order item ID
               name={item.buyer.fullname}
+              updates={item.updates}
+              id={item._id}
             />
           ))}
         </ul>

@@ -84,6 +84,16 @@ function App() {
             }
           />
           <Route
+            path="/orderS"
+            element={
+              <>
+                <Header />
+                <OrderS />
+                <Footer />
+              </>
+            }
+          />
+          <Route
             path="/pprofile/:id"
             element={
               <>
