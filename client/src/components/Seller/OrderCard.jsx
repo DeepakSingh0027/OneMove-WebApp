@@ -8,10 +8,29 @@ export default function OrderCard({ name, Pid, quantity, item, updates, id }) {
   const [updated, setUpdated] = useState(updates);
   const navigate = useNavigate();
 
+  function validateUpdates(fullname) {
+    console.log("Validating fullname:", fullname); // Debugging log
+    if (!fullname) {
+      return "Updates is required.";
+    }
+
+    const regex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+    console.log("Regex test result:", regex.test(fullname)); // Debugging log
+
+    if (!regex.test(fullname)) {
+      return "Full name should contain only letters and spaces, with no consecutive spaces.";
+    }
+
+    return false; // Valid input
+  }
   // Update Shipment Handler
   const updateShipment = useCallback(
     async (e) => {
       e.preventDefault();
+      if (validateUpdates(updated)) {
+        alert(validateUpdates(updated));
+        return;
+      }
 
       try {
         const payload = { updates: updated, id };
@@ -110,10 +129,12 @@ export default function OrderCard({ name, Pid, quantity, item, updates, id }) {
             Quantity:
             <span className="font-medium ml-1">{quantity}</span>
           </p>
-          <div className="flex items-center mt-1">
-            <p className="text-sm text-gray-800">Buyer:</p>
-            <p className="pl-2 text-sm text-[#df9949] font-medium">{name}</p>
-          </div>
+          {updated !== "Cancelled" && (
+            <div className="flex items-center mt-1">
+              <p className="text-sm text-gray-800">Buyer:</p>
+              <p className="pl-2 text-sm text-[#df9949] font-medium">{name}</p>
+            </div>
+          )}
         </div>
 
         <div className="flex mr-12">
@@ -123,21 +144,32 @@ export default function OrderCard({ name, Pid, quantity, item, updates, id }) {
           </p>
         </div>
 
-        <input
-          type="text"
-          value={updated}
-          className="border-2 border-[#df9949] rounded-lg px-4 py-2 w-64 text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#c99d6b] focus:border-[#c99d6b] transition-all duration-300"
-          placeholder="Update status..."
-          onChange={(e) => setUpdated(e.target.value)}
-        />
+        {updated !== "Cancelled" && (
+          <div>
+            <input
+              type="text"
+              value={updated}
+              className="border-2 border-[#df9949] rounded-lg px-4 py-2 w-64 text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#c99d6b] focus:border-[#c99d6b] transition-all duration-300"
+              placeholder="Update status..."
+              onChange={(e) => setUpdated(e.target.value)}
+            />
 
-        <button
-          className="bg-[#5b1414] text-[#c99d6b] px-6 py-3 rounded-lg font-medium relative overflow-hidden transition-all duration-300 hover:bg-[#c99d6b] hover:text-[#5b1414] hover:scale-105 active:scale-95"
-          onClick={updateShipment}
-        >
-          <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#9dced2] to-[#5b1414] opacity-0 hover:opacity-10 transition-opacity"></span>
-          Update Shipping Details
-        </button>
+            <button
+              className="bg-[#5b1414] text-[#c99d6b] px-6 py-3 rounded-lg font-medium relative overflow-hidden transition-all duration-300 hover:bg-[#c99d6b] hover:text-[#5b1414] hover:scale-105 active:scale-95"
+              onClick={updateShipment}
+            >
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#9dced2] to-[#5b1414] opacity-0 hover:opacity-10 transition-opacity"></span>
+              Update Shipping Details
+            </button>
+          </div>
+        )}
+
+        {updated === "Cancelled" && (
+          <button className="bg-[#5b1414] text-[#c99d6b] px-6 py-3 rounded-lg font-medium relative overflow-hidden transition-all duration-300 hover:bg-[#c99d6b] hover:text-[#5b1414] hover:scale-105 active:scale-95">
+            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#9dced2] to-[#5b1414] opacity-0 hover:opacity-10 transition-opacity"></span>
+            Cancelled
+          </button>
+        )}
       </li>
     </div>
   );

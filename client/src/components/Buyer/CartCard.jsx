@@ -99,10 +99,18 @@ export default function CartCard({
             Remove
           </button>
         ) : (
-          <button className="bg-[#5b1414] text-[#c99d6b] px-6 py-3 rounded-lg font-medium relative overflow-hidden transition-all duration-300 hover:bg-[#c99d6b] hover:text-[#5b1414] hover:scale-105 active:scale-95">
-            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#9dced2] to-[#5b1414] opacity-0 hover:opacity-10 transition-opacity"></span>
-            {updates}
-          </button>
+          <div>
+            <p className="text-center">Status: {updates}</p>
+            {updates !== "Cancelled" && (
+              <button
+                onClick={handleRemove}
+                className="bg-[#5b1414] text-[#c99d6b] px-6 py-3 rounded-lg font-medium relative overflow-hidden transition-all duration-300 hover:bg-[#c99d6b] hover:text-[#5b1414] hover:scale-105 active:scale-95"
+              >
+                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#9dced2] to-[#5b1414] opacity-0 hover:opacity-10 transition-opacity"></span>
+                Cancel Order
+              </button>
+            )}
+          </div>
         )}
       </li>
     </div>

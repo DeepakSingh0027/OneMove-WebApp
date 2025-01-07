@@ -22,63 +22,88 @@ export default function ListProduct() {
   const navigate = useNavigate();
   const [message, setMessage] = useState();
 
-  //Form submittion
-  const List = async (e) => {
-    // Clear previous messages
-    setMessage("");
+  // Validation functions
+  const validateTitle = (title) => {
+    if (!title) return "Title is required.";
+    return "";
+  };
 
-    // 1️⃣ **Boundary Check for Form Inputs**
-    if (!title) {
-      setMessage("Title is required");
-      return;
-    }
+  const validateDescription = (description) => {
+    if (!description) return "Description is required.";
+    return "";
+  };
 
-    if (!description) {
-      setMessage("Description is required");
-      return;
-    }
+  const validateSpecification = (specification) => {
+    if (!specificationList) return "Specification is required.";
+    return "";
+  };
 
-    if (!specification) {
-      setMessage("Specification is required");
-      return;
-    }
+  const validateQuantity = (quantity) => {
+    if (!quantity || quantity <= 0) return "Quantity must be greater than 0.";
+    return "";
+  };
 
-    if (!quantity || quantity <= 0) {
-      setMessage("Quantity is required and must be greater than 0");
-      return;
-    }
+  const validateCategory = (category) => {
+    if (!category) return "Category is required.";
+    return "";
+  };
 
-    if (!category) {
-      setMessage("Category is required");
-      return;
-    }
+  const validateCategoryDescription = (categoryDesp) => {
+    if (!categoryDesp) return "Category description is required.";
+    return "";
+  };
 
-    if (!categoryDesp) {
-      setMessage("Category description is required");
-      return;
-    }
-
-    if (!image) {
-      setMessage("Please upload an image");
-      return;
-    }
-
-    if (!price || price <= 0) {
-      setMessage("Price is required and must be greater than 0");
-      return;
-    }
-
-    // 2️⃣ **File Type and Size Check for Image**
+  const validateImage = (image) => {
     const allowedFileTypes = ["image/jpeg", "image/png", "image/jpg"];
     const maxFileSize = 5 * 1024 * 1024; // 5MB
 
-    if (!allowedFileTypes.includes(image.type)) {
-      setMessage("Only JPG, JPEG, and PNG files are allowed");
-      return;
-    }
+    if (!image) return "Please upload an image.";
+    if (!allowedFileTypes.includes(image.type))
+      return "Only JPG, JPEG, and PNG files are allowed.";
+    if (image.size > maxFileSize) return "File size should not exceed 5MB.";
 
-    if (image.size > maxFileSize) {
-      setMessage("File size should not exceed 5MB");
+    return "";
+  };
+
+  const validatePrice = (price) => {
+    if (!price || price <= 0) return "Price must be greater than 0.";
+    return "";
+  };
+
+  // Form submission
+  const List = async (e) => {
+    setMessage("");
+
+    // Validations
+    const titleError = validateTitle(title);
+    const descriptionError = validateDescription(description);
+    const specificationError = validateSpecification(specification);
+    const quantityError = validateQuantity(quantity);
+    const categoryError = validateCategory(category);
+    const categoryDespError = validateCategoryDescription(categoryDesp);
+    const imageError = validateImage(image);
+    const priceError = validatePrice(price);
+
+    if (
+      titleError ||
+      descriptionError ||
+      specificationError ||
+      quantityError ||
+      categoryError ||
+      categoryDespError ||
+      imageError ||
+      priceError
+    ) {
+      setMessage(
+        titleError ||
+          descriptionError ||
+          specificationError ||
+          quantityError ||
+          categoryError ||
+          categoryDespError ||
+          imageError ||
+          priceError
+      );
       return;
     }
 

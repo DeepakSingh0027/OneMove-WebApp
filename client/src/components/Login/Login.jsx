@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +21,80 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [usernameEmail, setUsernameEmail] = useState("");
-  //login form
+
+  function validateFullname(fullname) {
+    console.log("Validating fullname:", fullname); // Debugging log
+    if (!fullname) {
+      return "Full name is required.";
+    }
+
+    const regex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+    console.log("Regex test result:", regex.test(fullname)); // Debugging log
+
+    if (!regex.test(fullname)) {
+      return "Full name should contain only letters and spaces, with no consecutive spaces.";
+    }
+
+    return ""; // Valid input
+  }
+
+  function validateEmail(email) {
+    if (!email) {
+      return "Email is required.";
+    }
+
+    // Check if email contains '@' and '.' and ensure '@' appears before '.'
+    if (
+      email.indexOf("@") === -1 ||
+      email.indexOf(".") === -1 ||
+      email.indexOf("@") > email.lastIndexOf(".")
+    ) {
+      return "Invalid email format. Email must contain '@' and '.' with '@' before '.'.";
+    }
+
+    return ""; // No error, email is valid
+  }
+
+  function validateUsername(username) {
+    if (!username) {
+      return "Username is required.";
+    }
+    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      return "Username should contain only letters, numbers, and underscores.";
+    }
+    return "";
+  }
+
+  function validatePassword(password) {
+    if (!password) {
+      return "Password is required.";
+    }
+    if (password.length < 8) {
+      return "Password must be at least 8 characters long.";
+    }
+    if (
+      !/[A-Z]/.test(password) ||
+      !/[a-z]/.test(password) ||
+      !/[0-9]/.test(password)
+    ) {
+      return "Password must include at least one uppercase letter, one lowercase letter, and one number.";
+    }
+    return "";
+  }
+
+  function validateUsernameEmail(usernameEmail) {
+    if (!usernameEmail) {
+      return "Username or Email is required.";
+    }
+    const isEmail = usernameEmail.includes("@");
+    if (isEmail) {
+      return validateEmail(usernameEmail);
+    } else {
+      return validateUsername(usernameEmail);
+    }
+    return "";
+  }
+
   const loginFormSubmit = async () => {
     if (!usernameEmail || !password) {
       setMessage("Please fill in all fields.");
@@ -44,8 +117,6 @@ export default function Login() {
         }
       );
 
-      console.log(result);
-
       const responseData = result.data;
 
       if (responseData.success) {
@@ -61,7 +132,7 @@ export default function Login() {
           }
         }, 100);
       } else {
-        setMessage("Login failed. Please check your credentials. ");
+        setMessage("Login failed. Please check your credentials.");
       }
     } catch (error) {
       const backendError = error.response?.data;
@@ -80,7 +151,28 @@ export default function Login() {
       return;
     }
 
-    // Collect selected roles
+    if (validateFullname(fullname)) {
+      setMessage("Fullname should only contain alphabets and spaces.");
+      return;
+    }
+
+    if (validateEmail(email)) {
+      setMessage("Please enter a valid email address.");
+      return;
+    }
+
+    if (validateUsername(username)) {
+      setMessage(
+        "Username should be 3-20 characters long and contain only alphanumeric characters, dots, hyphens, or underscores."
+      );
+      return;
+    }
+
+    if (validatePassword(password)) {
+      setMessage("Password must be at least 8 characters long.");
+      return;
+    }
+
     const role = [];
     if (buyerSelected) role.push("buyer");
     if (sellerSelected) role.push("seller");
@@ -103,7 +195,7 @@ export default function Login() {
 
       if (responseData.success) {
         setMessage("Registration successful! Please log in.");
-        setIsLogin(true); // Switch to Login view
+        setIsLogin(true);
       } else {
         setMessage("Registration failed. Please try again.");
       }

@@ -29,15 +29,18 @@ export default function OrderS({ totalProducts }) {
     fetchOrderItems();
   }, []); // This runs once when the component mounts
 
-  // Calculate total earnings after orderItems are updated
   useEffect(() => {
     if (orderItems.length > 0) {
       const totalEarnings = orderItems.reduce((total, item) => {
-        return total + item.product.price * item.quantity; // Assuming item.product.price is a number
+        // Only include items that are not cancelled
+        if (item.updates !== "Cancelled") {
+          return total + item.product.price * item.quantity; // Assuming item.product.price is a number
+        }
+        return total;
       }, 0);
       setEarning(totalEarnings); // Update the earning state
     }
-  }, [orderItems]); // This effect runs when orderItems change
+  }, [orderItems]);
 
   if (loading) return <p>Loading your orders...</p>;
   if (error) return <p>Error: {error}</p>;

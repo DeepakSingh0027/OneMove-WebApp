@@ -106,4 +106,49 @@ const shippmentUpdate = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, updatedOrder, "Shippment Updated"));
 });
 
-export { listOrder, getOrderSold, getOrder, shippmentUpdate };
+const cancelOrder = asyncHandler(async (req, res, next) => {
+  const { itemId } = req.params; // Extract itemId from the route parameter
+
+  // Validate input
+  if (!itemId) {
+    throw new ApiError(400, "Order ID is required");
+  }
+
+  // Fetch the order
+  const order = await Order.findById(itemId);
+  if (!order) {
+    throw new ApiError(404, "Order not found");
+  }
+
+  // Check if the order is already cancelled
+  if (order.updates === "Cancelled") {
+    throw new ApiError(400, "Order is already cancelled");
+  }
+
+  // Fetch the associated product
+  const product = await Product.findById(order.product);
+  if (!product) {
+    throw new ApiError(404, "Associated product not found");
+  }
+
+  // Restore the product's quantity
+  product.quantity += order.quantity;
+  await product.save(); // Save the updated product
+
+  // Update the order status to "Cancelled"
+  order.updates = "Cancelled";
+  await order.save(); // Save the updated order
+
+  // Return success response
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { itemId, status: "Cancelled" },
+        "Order cancelled and product quantity restored"
+      )
+    );
+});
+
+export { listOrder, getOrderSold, getOrder, shippmentUpdate, cancelOrder };

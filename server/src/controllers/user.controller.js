@@ -254,13 +254,15 @@ const updateRole = asyncHandler(async (req, res) => {
   }
 
   if (user.activeRole === "seller") {
+    if (!user.role.includes("buyer")) {
+      throw new ApiError(400, "This is a seller account! Invalid Request");
+    }
     user.activeRole = "buyer";
   } else {
     if (!user.role.includes("seller")) {
       throw new ApiError(400, "This is a buyer account! Invalid Request");
-    } else {
-      user.activeRole = "seller";
     }
+    user.activeRole = "seller";
   }
   await user.save({ validateBeforeSave: false });
 
