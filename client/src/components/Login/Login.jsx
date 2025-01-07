@@ -152,24 +152,22 @@ export default function Login() {
     }
 
     if (validateFullname(fullname)) {
-      setMessage("Fullname should only contain alphabets and spaces.");
+      setMessage(validateFullname(fullname));
       return;
     }
 
     if (validateEmail(email)) {
-      setMessage("Please enter a valid email address.");
+      setMessage(validateEmail(email));
       return;
     }
 
     if (validateUsername(username)) {
-      setMessage(
-        "Username should be 3-20 characters long and contain only alphanumeric characters, dots, hyphens, or underscores."
-      );
+      setMessage(validateUsername(username));
       return;
     }
 
     if (validatePassword(password)) {
-      setMessage("Password must be at least 8 characters long.");
+      validatePassword(password);
       return;
     }
 
