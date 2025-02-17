@@ -167,7 +167,7 @@ export default function Login() {
     }
 
     if (validatePassword(password)) {
-      validatePassword(password);
+      setMessage(validatePassword(password));
       return;
     }
 
