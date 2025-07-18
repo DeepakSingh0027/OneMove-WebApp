@@ -1,3 +1,4 @@
+import RateLimit from "express-rate-limit";
 import { Router } from "express";
 import {
   changeCurrentPassword,
@@ -13,6 +14,13 @@ import { getUserProducts } from "../controllers/product.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router();
+
+// Rate limiter: maximum of 10 requests per minute for updateRole route
+const updateRoleRateLimiter = RateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 10, // max 10 requests per windowMs
+});
+
 router.route("/register").post(registerUser);
 
 router.route("/get-user-products").get(verifyJWT, getUserProducts);
@@ -29,6 +37,6 @@ router.route("/current-user").get(verifyJWT, getCurrentUser);
 
 router.route("/update-details").patch(verifyJWT, updateAccountDetails);
 
-router.route("/update-role").patch(verifyJWT, updateRole);
+router.route("/update-role").patch(updateRoleRateLimiter, verifyJWT, updateRole);
 
 export default router;
